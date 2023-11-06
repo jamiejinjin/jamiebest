@@ -1,0 +1,82 @@
+<head>
+    <title>Page 1</title>
+    <!-- bootstrap 4 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<hr>
+<div class="container">
+    <h1>Add fruit</h1>
+
+    <div class="form-group">
+        <label for="fruit">Fruit</label>
+        <input type="text" class="form-control" id="fruit" placeholder="Enter fruit">
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <input type="text" class="form-control" id="search-text" placeholder="Search Things">
+
+        <div>
+            <h3>Search results</h3>
+
+            <div id="search-results"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    let search_func = async () => {
+        let search_text = document.getElementById("search-text").value
+        if (search_text === "") {
+            return
+        }
+
+        await fetch(
+            `/search_amazing/${search_text}`,
+        ).then(
+            response => response.json()
+        ).then(
+            data => {
+                console.log(data)
+                let search_results = document.getElementById("search-results")
+                search_results.innerHTML = ""
+                for (let i = 0; i < data["results"].length; i++) {
+                    let result = data["results"][i]
+                    let result_div = document.createElement("div")
+                    result_div.innerHTML = result
+                    search_results.appendChild(result_div)
+                }
+            }
+        )
+    }
+
+    document.getElementById("search-text").addEventListener("keyup", search_func)
+
+    let addFruit = async () => {
+        await fetch(
+            "/add_fruit/",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: String(document.getElementById("fruit").value)
+                })
+            }
+        ).then(
+            response => response.json()
+        ).then(
+            data => {
+                console.log(data)
+                if (data["status"] === "success") {
+                    alert("Successfully added fruit")
+                } else {
+                    alert("Failed to add fruit")
+                }
+            }
+        )
+    }
+
+    document.querySelector("button").addEventListener("click", addFruit)
+</script>

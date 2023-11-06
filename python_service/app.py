@@ -11,12 +11,12 @@ api = FastAPI()
 
 @api.get("/")
 def read_root():
-    return {"message": "This is main page"}
+    return "Main page"
 
 
 @api.get("/right")
 def say_something_wise():
-    return "something wise: wife is always right, that's why husband is left"
+    return "something wise: yesterday is history, tomorrow is a mystery, but today is a gift. That is why it is called the present."
 
 
 @api.get("/page1")
