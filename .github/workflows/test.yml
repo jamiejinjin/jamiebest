@@ -30,5 +30,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install fastapi
           pip install pytest
+          pip install httpx
       - name: Test with pytest
         run: pytest -vv
